@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>refinerycms-pgsearch by jgwmaxwell</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>refinerycms-pgsearch</h1>
+        <p>PostgreSQL Full Text Search for Refinery CMS</p>
+
+        <p class="view"><a href="https://github.com/jgwmaxwell/refinerycms-pgsearch">View the Project on GitHub <small>jgwmaxwell/refinerycms-pgsearch</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jgwmaxwell/refinerycms-pgsearch/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jgwmaxwell/refinerycms-pgsearch/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jgwmaxwell/refinerycms-pgsearch">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Search plugin for <a href="http://www.refinerycms.com">RefineryCMS</a>
+</h1>
+
+<p><a href="http://github.com/resolve/refinerycms">Github</a></p>
+
+<p>By: <a href="http://jgwmaxwell.com">JGW Maxwell</a></p>
+
+<p>Powered by: <a href="http://github.com/Casecommons/pg_search">pg_search</a>. <strong>This only works on PostgreSQL databases, ideally 9.0+.</strong></p>
+
+<h2>Installation</h2>
+
+<p>Simply use this by adding the following to your <code>Gemfile</code>:</p>
+
+<div class="highlight">
+<pre><span class="n">gem</span> <span class="s1">'refinerycms-pgsearch'</span>
+<span class="c1"># or for the latest and greatest</span>
+<span class="n">gem</span> <span class="s1">'refinerycms-pgsearch'</span><span class="p">,</span> <span class="n">github</span><span class="p">:</span> <span class="s1">'jgwmaxwell/refinerycms-pgsearch'</span>
+</pre>
+</div>
+
+
+<p>Then run <code>bundle install</code>, and <code>rails g refinery:search</code> to generate the migrations. Finally, run <code>rake db:migrate</code> and <code>rake db:seed</code> to finish setting up.</p>
+
+<h2>Check The Initializer</h2>
+
+<p>The default installation will search in Pages. If you wish to find results in other plugins you have created or installed, you can specify these in <code>config/initializers/refinery/search.rb</code> like so:</p>
+
+<div class="highlight">
+<pre><span class="no">Refinery</span><span class="o">::</span><span class="no">Search</span><span class="o">.</span><span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">searchable_models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"Refinery::Page"</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:all_parts</span><span class="o">]</span><span class="p">,</span>
+        <span class="s2">"Refinery::Blog::Post"</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:title</span><span class="p">,</span> <span class="ss">:body</span><span class="o">]</span>
+    <span class="p">}</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<p>This will index Pages and Blog Posts for you. The format is: <code>"STRING_OF_MODEL_CLASS" =&gt; [:array, :of, :attribute, :symbols]</code>. You might notice that Pages are indexing <code>:all_parts</code> - this is a convenience to get the content out of multiple page parts that will be defined if you use it.</p>
+
+<h2>To use your own Models</h2>
+
+<p>Simple pass another line into the hash in the initializer, such as:</p>
+
+<div class="highlight">
+<pre><span class="s2">"Employee"</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="ss">:name</span><span class="p">,</span> <span class="ss">:bio</span><span class="o">]</span>
+</pre>
+</div>
+
+
+<p>You can use any public method, as well. So if you have <code>:first_name</code> and <code>:last_name</code> but a method like <code>name</code> to join them, it can be indexed.</p>
+
+<h2>Existing Data and Rebuilding</h2>
+
+<p>If at any point you need to rebuild your search index, run <code>rake refinery:search:rebuild</code> to update all your search records!</p>
+
+<h2>Searching and Viewing</h2>
+
+<p>A sample search form can be found in <a href="http://github.com/jgwmaxwell/refinerycms-pgsearch/blob/master/app/views/refinery/shared/_search.html.erb">views/refinery/shared/_search.html.erb</a>.
+You can either use this partial directly, or copy the appropriate parts.</p>
+
+<p>If you wish to override the url used in the search results just add a <code>url</code> method to your model and the result of this method will be used instead.</p>
+
+<h2>Migrating from refinerycms-search</h2>
+
+<p>You'll need to run the generator, migrate the database, update the new initializer and remove the old code from <code>application.rb</code>. Then remove the <code>acts_as_indexed</code> statements from your models but otherwise it should be good to go. Let me know if you need help.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jgwmaxwell">jgwmaxwell</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
