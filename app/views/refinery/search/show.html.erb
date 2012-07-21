@@ -1,0 +1,19 @@
+<% content_for :body_content_title do %>
+  <%= t('.search_results_for', :what => params[:query]) %>
+<% end %>
+
+<% content_for :body_content_left do %>
+  <ul id="search_results">
+    <% @results.each do |result| %>
+      <li>
+        <span class='result_type'>
+          <%= result_type result.searchable %>
+        </span>
+        <%= link_to result_title(result.searchable).html_safe, result_url(result.searchable) %>
+      </li>
+    <% end %>
+  </ul>
+
+<% end %>
+
+<%= render :partial => "/refinery/content_page" %>
