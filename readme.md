@@ -5,6 +5,8 @@ By: [JGW Maxwell](http://jgwmaxwell.com)
 
 Powered by: [pg_search](http://github.com/Casecommons/pg_search). **This only works on PostgreSQL databases, ideally 9.0+.**
 
+I will be stabilising support for 8.x soon, but as long as you can install extensions you'll be good to go. Any of the new [Heroku Postgres](http://postgres.heroku.com) plans, even the Dev one, will suit.
+
 ## Installation
 
 Simply use this by adding the following to your `Gemfile`:
