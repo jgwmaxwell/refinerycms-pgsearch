@@ -1,6 +1,9 @@
 # Search plugin for [RefineryCMS](http://www.refinerycms.com)
 [Github](http://github.com/resolve/refinerycms)
 
+## Shape the future of this Gem
+Please fill in this [questionnaire](https://docs.google.com/spreadsheet/viewform?formkey=dGEtODg5d0pVeG9reEVfdTEyc0MtNWc6MQ) to help me shape the future development of the gem. It's also a chance to request features, too!
+
 By: [JGW Maxwell](http://jgwmaxwell.com)
 
 Powered by: [pg_search](http://github.com/Casecommons/pg_search). **This only works on PostgreSQL databases, ideally 9.0+.**
